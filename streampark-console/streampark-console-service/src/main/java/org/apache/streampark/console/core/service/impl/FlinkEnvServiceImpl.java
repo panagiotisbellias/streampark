@@ -96,8 +96,7 @@ public class FlinkEnvServiceImpl extends ServiceImpl<FlinkEnvMapper, FlinkEnv>
     long count = this.baseMapper.selectCount(null);
     version.setIsDefault(count == 0);
     version.setCreateTime(new Date());
-    version.doSetVersion();
-    version.doSetFlinkConf();
+    version.setup();
     return save(version);
   }
 
@@ -121,8 +120,7 @@ public class FlinkEnvServiceImpl extends ServiceImpl<FlinkEnvMapper, FlinkEnv>
     flinkEnv.setFlinkName(version.getFlinkName());
     if (!version.getFlinkHome().equals(flinkEnv.getFlinkHome())) {
       flinkEnv.setFlinkHome(version.getFlinkHome());
-      flinkEnv.doSetFlinkConf();
-      flinkEnv.doSetVersion();
+      flinkEnv.setup();
     }
     updateById(flinkEnv);
   }
@@ -155,7 +153,7 @@ public class FlinkEnvServiceImpl extends ServiceImpl<FlinkEnvMapper, FlinkEnv>
   @Override
   public void syncConf(Long id) {
     FlinkEnv flinkEnv = getById(id);
-    flinkEnv.doSetFlinkConf();
+    flinkEnv.setupConfigFile();
     updateById(flinkEnv);
   }
 

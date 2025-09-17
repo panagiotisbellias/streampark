@@ -71,7 +71,12 @@ public class FlinkEnv implements Serializable {
   private static final String NEW_CONFIG_FILE = "config.yaml";
   private static final String CONF_DIR = "/conf/";
 
-  public void doSetFlinkConf() throws ApiDetailException {
+  public void setup() {
+    this.setupVersion();
+    this.setupConfigFile();
+  }
+
+  public void setupConfigFile() throws ApiDetailException {
     Float version = getVersionNumber();
     File configFile = resolveConfigFile(version);
     this.flinkConf = configFile.getAbsolutePath();
@@ -117,7 +122,7 @@ public class FlinkEnv implements Serializable {
     }
   }
 
-  public void doSetVersion() {
+  public void setupVersion() {
     this.setVersion(this.getFlinkVersion().version());
     this.setScalaVersion(this.getFlinkVersion().scalaVersion());
     if (!streamParkScalaVersion.startsWith(this.getFlinkVersion().scalaVersion())) {
